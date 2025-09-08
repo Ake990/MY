@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ຮັບອໍເດີ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-4">
+
+  <!-- Message Box -->
+  <div id="messageBox" class="message-box"></div>
+
+  <!-- Main App -->
+  <div id="mainApp" class="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-2xl w-full max-w-lg transition-all duration-500 ease-in-out border-4 border-pink-300 dark:border-pink-600">
+    
+    <!-- Header -->
+    <div class="flex justify-center items-center mb-6">
+      <h1 class="text-3xl font-bold text-center text-gray-900 dark:text-white">
+        ຮັບອໍເດີ ✨
+      </h1>
+    </div>
+
+    <div class="space-y-6">
+      <!-- Customer Info -->
+      <div class="space-y-4">
+        <h2 class="text-xl font-semibold text-gray-800 dark:text-white">ຂໍ້ມູນລູກຄ້າ</h2>
+        <div class="p-4 bg-pink-50 dark:bg-gray-700 rounded-2xl space-y-2">
+          <div>
+            <label for="customerNameInput" class="block text-sm font-medium text-pink-700 dark:text-gray-300 mb-1">ຊື່ລູກຄ້າ</label>
+            <input id="customerNameInput" type="text" placeholder="ຊື່-ນາມສະກຸນ" class="input-box">
+          </div>
+          <div>
+            <label for="customerPhoneInput" class="block text-sm font-medium text-pink-700 dark:text-gray-300 mb-1">ເບີໂທລະສັບ</label>
+            <input id="customerPhoneInput" type="tel" placeholder="08xxxxxxxx" class="input-box">
+          </div>
+          <div>
+            <label for="branchInput" class="block text-sm font-medium text-pink-700 dark:text-gray-300 mb-1">ສາຂາ</label>
+            <input id="branchInput" type="text" placeholder="ສາຂາທີ່ຮັບສິນຄ້າ" class="input-box">
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Section -->
+      <div class="space-y-4">
+        <h2 class="text-xl font-semibold text-gray-800 dark:text-white">ລາຍການສິນຄ້າ</h2>
+        <div class="p-4 bg-pink-50 dark:bg-gray-700 rounded-2xl">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="productGrid"></div>
+        </div>
+        <div class="p-4 bg-pink-50 dark:bg-gray-700 rounded-2xl">
+          <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-2">ສະຫຼຸບອໍເດີ</h3>
+          <ul id="orderSummary" class="text-pink-700 dark:text-gray-300"></ul>
+          <textarea id="notesInput" placeholder="ໝາຍເຫດສິນຄ້າ" rows="2" class="input-box mt-4"></textarea>
+          <textarea id="deliveryNotesInput" placeholder="ໝາຍເຫດການຈັດສົ່ງ" rows="2" class="input-box mt-4"></textarea>
+        </div>
+      </div>
+
+      <!-- Payment -->
+      <div class="p-4 bg-pink-50 dark:bg-gray-700 rounded-2xl space-y-4">
+        <h2 class="text-xl font-semibold text-gray-800 dark:text-white">ວິທີການຊໍາລະເງິນ</h2>
+        <select id="paymentMethod" class="input-box">
+          <option value="cod">ເກັບເງິນປາຍທາງ</option>
+          <option value="qr">ສະແກນ QR</option>
+        </select>
+        <div id="sendOrderSection">
+          <button id="sendOrderButton" class="btn-primary">ສົ່ງອໍເດີ</button>
+        </div>
+      </div>
+
+      <!-- Upload Slip -->
+      <div id="paymentSlipSection" class="p-4 bg-pink-50 dark:bg-gray-700 rounded-2xl space-y-4 hidden">
+        <h2 class="text-xl font-semibold text-gray-800 dark:text-white">ແຈ້ງຫຼັກຖານ</h2>
+        <div id="qrCodeContainer" class="mt-4 flex flex-col items-center">
+          <img src="https://i.ibb.co/6y4V5q2/1000001147.jpg" class="w-64 h-64 rounded-lg shadow-md">
+          <p class="text-sm text-pink-500 dark:text-gray-400 mt-2">ກະລຸນາສະແກນ QR ເພື່ອຊໍາລະເງິນ</p>
+        </div>
+        <input type="file" id="paymentSlipInput" accept="image/*" class="input-box">
+        <div id="slipPreviewContainer" class="mt-4 hidden">
+          <img id="slipPreview" class="w-full max-w-xs mx-auto rounded-lg shadow-md border border-pink-200 dark:border-gray-600">
+        </div>
+        <button id="sendSlipButton" class="btn-blue">ສົ່ງຫຼັກຖານ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Modal -->
+  <div id="productDetailModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 hidden">
+    <div class="bg-white dark:bg-gray-800 rounded-3xl p-6 w-full max-w-sm shadow-2xl relative border-4 border-pink-300 dark:border-pink-600">
+      <button id="closeModalButton" class="absolute top-3 right-3">✖</button>
+      <div class="flex flex-col items-center text-center">
+        <img id="modalProductImage" src="" class="w-48 h-48 object-cover rounded-xl mb-4 border border-pink-200">
+        <div id="modalImageGallery" class="flex justify-center space-x-2 mt-4"></div>
+        <h3 id="modalProductName" class="text-2xl font-bold text-gray-900 dark:text-white mb-2"></h3>
+        <p id="modalProductDescription" class="text-gray-600 dark:text-gray-400 text-sm mb-4"></p>
+        <p id="modalProductPrice" class="text-lg font-semibold text-pink-600 dark:text-pink-400"></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
